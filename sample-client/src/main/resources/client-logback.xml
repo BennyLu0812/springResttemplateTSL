@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+    <!-- 定義日志文件輸出位置 -->
+    <property name="ROOT_DIR" value="C:/software/clientWeb/app_logs" />
+    <!-- 日志最大的历史 30天 -->
+    <property name="maxHistory" value="300" />
+    <property name="maxFileSize" value="100MB" />
+
+    <!-- ConsoleAppender 控制臺日志輸出 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ERROR級別日志 -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.core.filter.EvaluatorFilter">
+            <evaluator> <!-- defaults to type ch.qos.logback.classic.boolex.JaninoEventEvaluator -->
+                <expression>
+                    return event.getLevel().isGreaterOrEqual(Level.ERROR);
+                </expression>
+            </evaluator>
+            <OnMismatch>DENY</OnMismatch>
+            <OnMatch>ACCEPT</OnMatch>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT_DIR}/%d{yyyyMMdd,aux}/error-%d{yyyy-MM-dd}.%i.%d{HH-mm,aux}.log.gz</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger:%L - %n	%msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- ALL級別日志 -->
+    <appender name="ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT_DIR}/%d{yyyyMMdd}/all-%d{yyyy-MM-dd}.%i.%d{HH-mm,aux}.log.gz</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80}:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="CAS" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <fileNamePattern>${ROOT_DIR}/%d{yyyyMMdd}/cas-%d{yyyy-MM-dd}.%i.%d{HH-mm,aux}.log.gz</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <maxHistory>${maxHistory}</maxHistory>
+        </rollingPolicy>
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80}:%L - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+
+
+    <logger name="org.springframework" level="info" additivity="true" />
+    <logger name="com.alibaba.druid" level="info" additivity="true" />
+    <logger name="druid.sql" level="info" additivity="true" />
+    <logger name="org.quartz.core" level="info" additivity="true" />
+    <logger name="org.hibernate" level="info" additivity="true" />
+    <logger name="org.hibernate.SQL" level="info" additivity="true" />
+    <logger name="org.hibernate.loader.Loader" level="info" additivity="true" />
+    <logger name="org.dozer" level="info" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="net.sf.jasperreports" level="info" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+    <logger name="org.redisson" level="info" additivity="false"  />
+    <logger name="org.apache.cxf" level="info" additivity="false"  />
+    <logger name="org.apache.commons.beanutils.converters" level="info" additivity="false"  />
+    <logger name="org.hibernate.loader.Loader" level="info" additivity="false"  />
+    <logger name="o.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="ERROR" additivity="false"  />
+    <logger name="org.springframework.test" level="ERROR" additivity="false"  />
+    <logger name="freemarker.cache" level="ERROR" additivity="false"  />
+    <logger name="org.springframework.boot.test.context.SpringBootTestContextBootstrapper" level="ERROR" additivity="false"  />
+    <logger name="org.springframework.test.context.support.AbstractContextLoader" level="ERROR" additivity="false"  />
+    <logger name="org.springframework.test.annotation.ProfileValueUtils" level="ERROR" additivity="false"  />
+    <logger name="io.netty.buffer.PooledByteBufAllocator" level="ERROR" additivity="false"  />
+    <logger name="io.netty.util.Recycler" level="ERROR" additivity="false"  />
+    <logger name="org.quartz.impl.jdbcjobstore.StdRowLockSemaphore" level="ERROR" additivity="false"  />
+    <logger name="org.dozer.DozerBeanMapper" level="ERROR" additivity="false"  />
+    <logger name="jcifs.smb" level="INFO" additivity="true"/>
+
+    <!-- name包必须能够扫描到的类，包括启动类 -->
+
+    <root level="INFO">
+        <appender-ref ref="ERROR" />
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="ALL" />
+
+    </root>
+
+</configuration>  

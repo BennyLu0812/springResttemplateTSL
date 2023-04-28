@@ -1,0 +1,20 @@
+server:
+  port: 8443
+  context-path: /serverweb
+  ssl:
+      enabled: true
+      client-auth: need
+      protocol: TLS
+      key-alias: serverkey
+      key-store-type: JKS
+      key-store: classpath:server.jks
+      key-store-password: s3cr3t
+      key-password: s3cr3t
+      trust-store: classpath:serverTrustkeys.jks
+      trust-store-password: s3cr3t
+      trust-store-type: JKS
+
+
+# 配置logback
+logging:
+  config: classpath:logback-spring.xml

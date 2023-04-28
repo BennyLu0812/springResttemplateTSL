@@ -1,0 +1,30 @@
+1、生成密钥
+
+keytool -genkey -alias serverkey -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore server.p12 -validity 36500 -keypass s3cr3t -storepass s3cr3t -dname "CN=ServerS,OU=AccentureS,O=DevelopmentS,L=ChinaS,S=zhuhaiS,C=ZHS"
+
+keytool -genkey -alias clientkey -storetype PKCS12 -keyalg RSA -keysize 2048 -keystore client.p12 -validity 36500 -keypass s3cr3t -storepass s3cr3t -dname "CN=ServerC,OU=AccentureC,O=DevelopmentC,L=ChinaC,S=zhuhaiC,C=ZHC"
+
+2、导出双方公钥
+
+keytool -keystore server.p12 -export -alias serverkey -file server-public.cer -storepass s3cr3t
+
+keytool -keystore client.p12 -export -alias clientkey -file client-public.cer -storepass s3cr3t
+
+
+
+
+4
+keytool -list -alias clientkey -keystore cacerts -storepass changeit
+
+keytool -list -alias serverkey -keystore cacerts -storepass changeit
+
+keytool -importkeystore -srckeystore client.jks -destkeystore client.p12 -srcstoretype jks -deststoretype pkcs12
+keytool -importkeystore -srckeystore server.jks -destkeystore server.p12 -srcstoretype jks -deststoretype pkcs12
+
+keytool -importcert -keystore c:\Hunter\server.jks -alias clientcert -file c:\Hunter\client-public.cer -storepass s3cr3t -noprompt
+
+keytool -delete -alias serverkey -keystore cacerts -storepass changeit
+keytool -delete -alias clientkey -keystore cacerts -storepass changeit
+
+keytool -import -alias serverkey -file "C:\Users\BennyLu\Desktop\test-cert-file\test\server-public.cer" -keystore cacerts -storepass changeit
+keytool -import -alias clientkey -file "C:\Users\BennyLu\Desktop\test-cert-file\test\client-public.cer" -keystore cacerts -storepass changeit

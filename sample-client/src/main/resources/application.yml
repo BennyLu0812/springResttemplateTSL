@@ -1,0 +1,20 @@
+server:
+  port: 9090
+  context-path: /client/web
+sampleserver:
+  url: https://servers/serverweb/
+
+# 配置logback
+logging:
+  config: classpath:logback-spring.xml
+
+app:
+  key-alias: clientkey
+  key-password: s3cr3t
+  key-store: classpath:client.jks
+  key-store-password: s3cr3t
+  key-store-type: JKS
+  trust-store: classpath:clientTrustkeys.jks
+  trust-store-password: s3cr3t
+  trust-store-type: JKS
+
